@@ -1,0 +1,14 @@
+services:
+  - type: worker  # Use worker instead of web service
+    name: music-bot
+    env: docker
+    docker:
+      dockerfile: Dockerfile
+    # No port needed for worker services
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: GIT_PYTHON_REFRESH
+        value: quiet
+      - key: BOT_TOKEN
+        fromSecret: true  # You'll set this in Render dashboard
