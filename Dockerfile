@@ -2,15 +2,18 @@ FROM python:3.10-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies and Node.js 19
+# Install system dependencies and Node.js 18 (LTS)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl \
     ffmpeg \
     gnupg \
     ca-certificates && \
-    # Install Node.js using the official NodeSource script
-    curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && \
+    # Add Node.js 18 repository manually
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" > /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
     apt-get install -y --no-install-recommends nodejs && \
     # Clean up
     apt-get clean && \
