@@ -1,18 +1,16 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs19
+FROM python:3.10-slim
 
-# Ensure noninteractive to avoid tzdata prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update & install ffmpeg safely
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
+# Install Node.js 19 + ffmpeg
+RUN apt-get update && apt-get install -y curl ffmpeg gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && \
+    apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy app
 WORKDIR /app
 COPY . /app/
 
-# Install Python deps
 RUN pip3 install --no-cache-dir -U -r requirements.txt
 
 CMD ["bash", "start"]
