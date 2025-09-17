@@ -9,12 +9,8 @@ RUN apt-get update && \
     ffmpeg \
     gnupg \
     ca-certificates && \
-    # Add Node.js repository key and source
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_19.x nodistro main" > /etc/apt/sources.list.d/nodesource.list && \
-    # Install Node.js
-    apt-get update && \
+    # Install Node.js using the official NodeSource script
+    curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && \
     apt-get install -y --no-install-recommends nodejs && \
     # Clean up
     apt-get clean && \
