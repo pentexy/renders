@@ -1,14 +1,27 @@
 services:
-  - type: worker  # Use worker instead of web service
+  - type: worker
     name: music-bot
     env: docker
     docker:
       dockerfile: Dockerfile
-    # No port needed for worker services
+    autoDeploy: true
+    plan: free
     envVars:
       - key: PYTHONUNBUFFERED
-        value: 1
+        value: "1"
       - key: GIT_PYTHON_REFRESH
-        value: quiet
+        value: "quiet"
+      - key: API_ID
+        fromSecret: true
+      - key: API_HASH
+        fromSecret: true
       - key: BOT_TOKEN
-        fromSecret: true  # You'll set this in Render dashboard
+        fromSecret: true
+      - key: LOGGER_ID
+        fromSecret: true
+      - key: MONGO_DB_URI
+        fromSecret: true
+      - key: OWNER_ID
+        fromSecret: true
+      - key: STRING_SESSION
+        fromSecret: true
